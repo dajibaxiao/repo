@@ -1,0 +1,85 @@
+:root {
+  --c-bg: #f7f7f7;
+  --c-scrollbar: #eee;
+  --c-scrollbar-hover: #bbb;
+  --accent: 124, 58, 237;
+  --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, #f6c44f 60%);
+  transition: all .1s;
+}
+
+html {
+  background-color: var(--c-bg);
+}
+
+html.dark {
+  --c-bg: #121212;
+  --c-scrollbar: #111;
+  --c-scrollbar-hover: #222;
+}
+
+body {
+  /* background-color: var(--c-bg); */
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--c-bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-scrollbar);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-scrollbar-hover);
+}
+
+#app {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  height: 100vh;
+  /* padding: 1rem; */
+  /* text-align: center; */
+}
+
+/* @media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+
+  code {
+    background-color: #f9f9f9;
+  }
+} */
