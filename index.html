@@ -69,7 +69,7 @@ var a = 'retrtrfdcfvvvv';
 	<div class="gonggao search bar1">
 		<div class="form">
 			<div>
-				<input type="text" placeholder="请输入您要搜索的游戏..." id="searchvalue">
+				<input type="text" id="searchvalue" inputmode="search" placeholder="请输入您要搜索的游戏..." />
 				<button onclick="search()"></button>
 			</div>
 		</div>
@@ -1094,8 +1094,37 @@ var a = 'retrtrfdcfvvvv';
 				class="button button-glow button-rounded button-highlight"> 登录 </a>
 			</li>
 </ul></div></div>
-	<script type="text/javascript">
-jQuery(".slideBox").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,trigger:"click"});function search(){var a=$("#searchvalue").val();if(a.length>0){var html=$(".item:contains("+a+")").html();var str=" <ul><div class='qita_title gameList'>游戏列表</div><li class='item'>"+html+"</li></ul>";if(html!=undefined){$(".items").html("").append(str)}else{$(".items").html("").append("<div style='padding:20px'>抱歉,没有找到包含：<span style='color:red'>"+a+"</span>的游戏<br><a class='jiaocheng' href='index.html'>去看看其他游戏 ></ a><br>欧皇源码:ohbbs.cn <br><div>")}}else{window.location.href='./index.html'}}
+	<script>
+// 搜索函数，支持模糊匹配游戏名
+function search() {
+  const keyword = $("#searchvalue").val().trim().toLowerCase();
+  if (keyword === "") {
+    window.location.href = './index.html'; // GitHub Pages 不支持 .php
+    return;
+  }
+
+  let matchedHTML = "";
+  $(".item").each(function () {
+    const gameName = $(this).find(".name").text().trim().toLowerCase();
+    if (gameName.includes(keyword)) {
+      matchedHTML += "<li class='item'>" + $(this).html() + "</li>";
+    }
+  });
+
+  if (matchedHTML) {
+    const listWrap = "<ul><div class='qita_title gameList'>游戏列表</div>" + matchedHTML + "</ul>";
+    $(".items").html(listWrap);
+  } else {
+    $(".items").html(`
+      <div style='padding:20px'>
+        抱歉，未找到包含：<span style='color:red'>${keyword}</span> 的游戏<br>
+        <a class='jiaocheng' href='index.html'>去看看其他游戏 ></a><br>
+        欧皇源码：ohbbs.cn
+      </div>
+    `);
+  }
+}
 </script>
+
 </body>
 </html>
