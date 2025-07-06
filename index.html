@@ -1094,8 +1094,36 @@ var a = 'retrtrfdcfvvvv';
 				class="button button-glow button-rounded button-highlight"> 登录 </a>
 			</li>
 </ul></div></div>
+	<script>
+function search() {
+  const keyword = $("#searchvalue").val().trim().toLowerCase();
+  if (keyword.length === 0) {
+    window.location.href = './index.php';
+    return;
+  }
+
+  let foundItems = "";
+  $(".item").each(function () {
+    const nameText = $(this).find(".name").text().trim().toLowerCase();
+    if (nameText.includes(keyword)) {
+      foundItems += "<li class='item'>" + $(this).html() + "</li>";
+    }
+  });
+
+  if (foundItems) {
+    const html = "<ul><div class='qita_title gameList'>游戏列表</div>" + foundItems + "</ul>";
+    $(".items").html(html);
+  } else {
+    $(".items").html(
+      `<div style='padding:20px'>
+        抱歉，没有找到包含：
+        <span style='color:red'>${keyword}</span> 的游戏<br>
+        <a class='jiaocheng' href='index.php'>去看看其他游戏 ></a><br>
+        欧皇源码：ohbbs.cn
+      </div>`
+    );
+  }
+}
+</script>
 </body>
 </html>
-<script type="text/javascript">
-jQuery(".slideBox").slide({mainCell:".bd ul",effect:"fold",autoPlay:true,trigger:"click"});function search(){var a=$("#searchvalue").val();if(a.length>0){var html=$(".item:contains("+a+")").html();var str=" <ul><div class='qita_title gameList'>游戏列表</div><li class='item'>"+html+"</li></ul>";if(html!=undefined){$(".items").html("").append(str)}else{$(".items").html("").append("<div style='padding:20px'>抱歉,没有找到包含：<span style='color:red'>"+a+"</span>的游戏<br><a class='jiaocheng' href='index.php'>去看看其他游戏 ></ a><br>欧皇源码:ohbbs.cn <br><div>")}}else{window.location.href='./index.php'}}
-</script>
