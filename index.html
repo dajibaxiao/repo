@@ -1094,42 +1094,56 @@ var a = 'retrtrfdcfvvvv';
 				class="button button-glow button-rounded button-highlight"> 登录 </a>
 			</li>
 </ul></div></div>
-  <script>
-    // 确保 DOM 加载完毕
-    document.addEventListener('DOMContentLoaded', function() {
-      // 绑定按钮点击与输入回车
-      var input = document.getElementById('searchvalue');
-      var btn   = document.querySelector('.bar1 button');
+  <!-- 高亮样式：放到 <head> 中或这里一起都行 -->
+<style>
+  .item.highlight { 
+    background: rgba(255, 250, 140, 0.7);
+    transition: background 0.3s;
+  }
+</style>
 
-      btn.addEventListener('click', search);
-      input.addEventListener('keydown', function(e){
-        if (e.key === 'Enter') search();
-      });
+<!-- 定位搜索脚本：紧贴 </body> 之前 -->
+<script>
+  // 确保 DOM 完全加载
+  document.addEventListener('DOMContentLoaded', function() {
+    var input = document.getElementById('searchvalue');
+    // 如果你的搜索按钮有 id，就改成对应 id，否则用 querySelector
+    var btn   = document.querySelector('.bar1 button');
 
-      function search() {
-        var kw = input.value.trim().toLowerCase();
-        if (!kw) {
-          alert('请输入搜索关键词');
+    btn.addEventListener('click', search);
+    input.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') search();
+    });
+
+    function search() {
+      var kw = input.value.trim().toLowerCase();
+      if (!kw) {
+        alert('请输入搜索关键词');
+        return;
+      }
+
+      // 先清除旧高亮
+      document.querySelectorAll('.item.highlight')
+        .forEach(el => el.classList.remove('highlight'));
+
+      // 遍历 .item，找 .name 文本包含关键字的第一个
+      var items = document.querySelectorAll('.item');
+      for (var i = 0; i < items.length; i++) {
+        var nameEl = items[i].querySelector('.name');
+        if (!nameEl) continue;
+
+        if (nameEl.textContent.trim().toLowerCase().indexOf(kw) !== -1) {
+          // 高亮并滚动到视口中央
+          items[i].classList.add('highlight');
+          items[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
-        // 遍历所有游戏项，匹配 .name 文本
-        var items = document.querySelectorAll('.item');
-        for (var i = 0; i < items.length; i++) {
-          var nameEl = items[i].querySelector('.name');
-          if (!nameEl) continue;
-          var name = nameEl.textContent.trim().toLowerCase();
-          if (name.indexOf(kw) !== -1) {
-            // 找到第一个匹配项，取其链接并跳转
-            var a = items[i].querySelector('a');
-            if (a && a.href) {
-              return window.location.href = a.href;
-            }
-          }
-        }
-        alert('未找到包含“' + kw + '”的游戏');
       }
-    });
-  </script>
+
+      alert('未找到包含“' + kw + '”的游戏');
+    }
+  });
+</script>
 
 </body>
 </html>
