@@ -1095,25 +1095,24 @@ var a = 'retrtrfdcfvvvv';
 			</li>
 </ul></div></div>
 	<script>
-// 搜索函数，支持模糊匹配游戏名
+// 游戏搜索函数，支持模糊匹配和大小写不敏感
 function search() {
   const keyword = $("#searchvalue").val().trim().toLowerCase();
   if (keyword === "") {
-    window.location.href = './index.html'; // GitHub Pages 不支持 .php
+    window.location.href = "./index.html";
     return;
   }
 
-  let matchedHTML = "";
+  let matched = "";
   $(".item").each(function () {
-    const gameName = $(this).find(".name").text().trim().toLowerCase();
-    if (gameName.includes(keyword)) {
-      matchedHTML += "<li class='item'>" + $(this).html() + "</li>";
+    const name = $(this).find(".name").text().trim().toLowerCase();
+    if (name.includes(keyword)) {
+      matched += "<li class='item'>" + $(this).html() + "</li>";
     }
   });
 
-  if (matchedHTML) {
-    const listWrap = "<ul><div class='qita_title gameList'>游戏列表</div>" + matchedHTML + "</ul>";
-    $(".items").html(listWrap);
+  if (matched !== "") {
+    $(".items").html("<ul><div class='qita_title gameList'>游戏列表</div>" + matched + "</ul>");
   } else {
     $(".items").html(`
       <div style='padding:20px'>
@@ -1125,6 +1124,7 @@ function search() {
   }
 }
 </script>
+
 
 </body>
 </html>
