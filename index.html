@@ -1094,53 +1094,65 @@ var a = 'retrtrfdcfvvvv';
 				class="button button-glow button-rounded button-highlight"> 登录 </a>
 			</li>
 </ul></div></div>
-  <!-- 高亮样式：放到 <head> 中或这里一起都行 -->
+<!-- 放到 <head> 中或者 <body> 末尾都行 -->
 <style>
-  .item.highlight { 
+  .item.highlight {
     background: rgba(255, 250, 140, 0.7);
     transition: background 0.3s;
   }
 </style>
 
-<!-- 定位搜索脚本：紧贴 </body> 之前 -->
 <script>
-  // 确保 DOM 完全加载
   document.addEventListener('DOMContentLoaded', function() {
     var input = document.getElementById('searchvalue');
-    // 如果你的搜索按钮有 id，就改成对应 id，否则用 querySelector
     var btn   = document.querySelector('.bar1 button');
+    var matches = [];          // 存储所有匹配项
+    var currentIndex = 0;      // 循环索引
+    var lastKeyword = '';      // 上次关键词，用于判断是否重新匹配
 
-    btn.addEventListener('click', search);
+    btn.addEventListener('click', searchNext);
     input.addEventListener('keydown', function(e){
-      if (e.key === 'Enter') search();
+      if (e.key === 'Enter') searchNext();
     });
 
-    function search() {
+    function searchNext() {
       var kw = input.value.trim().toLowerCase();
       if (!kw) {
         alert('请输入搜索关键词');
         return;
       }
-
-      // 先清除旧高亮
-      document.querySelectorAll('.item.highlight')
-        .forEach(el => el.classList.remove('highlight'));
-
-      // 遍历 .item，找 .name 文本包含关键字的第一个
-      var items = document.querySelectorAll('.item');
-      for (var i = 0; i < items.length; i++) {
-        var nameEl = items[i].querySelector('.name');
-        if (!nameEl) continue;
-
-        if (nameEl.textContent.trim().toLowerCase().indexOf(kw) !== -1) {
-          // 高亮并滚动到视口中央
-          items[i].classList.add('highlight');
-          items[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
+      // 如果关键词变化，重新收集匹配项并重置索引
+      if (kw !== lastKeyword) {
+        // 清除旧高亮
+        document.querySelectorAll('.item.highlight')
+                .forEach(el => el.classList.remove('highlight'));
+        // 重新收集
+        matches = Array.from(document.querySelectorAll('.item'))
+          .filter(item => {
+            var nameEl = item.querySelector('.name');
+            return nameEl
+              && nameEl.textContent.trim().toLowerCase().indexOf(kw) !== -1;
+          });
+        currentIndex = 0;
+        lastKeyword = kw;
       }
 
-      alert('未找到包含“' + kw + '”的游戏');
+      if (matches.length === 0) {
+        alert('未找到包含“' + kw + '”的游戏');
+        return;
+      }
+
+      // 高亮当前项并滚动到视口中央
+      var item = matches[currentIndex];
+      // 清除上一个高亮
+      document.querySelectorAll('.item.highlight')
+              .forEach(el => el.classList.remove('highlight'));
+
+      item.classList.add('highlight');
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // 更新索引，循环到下一项
+      currentIndex = (currentIndex + 1) % matches.length;
     }
   });
 </script>
